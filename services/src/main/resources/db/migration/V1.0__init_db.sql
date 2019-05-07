@@ -7,3 +7,10 @@ CREATE TABLE IF NOT EXISTS PERSON (
     LAST_NAME VARCHAR(100) NOT NULL,
     id INT PRIMARY KEY
 );
+
+CREATE TABLE IF NOT EXISTS Smoke (
+    message VARCHAR(100) NOT NULL,
+    id INT PRIMARY KEY
+);
+
+insert into Smoke(message,id) values("hello smoke!",1);
