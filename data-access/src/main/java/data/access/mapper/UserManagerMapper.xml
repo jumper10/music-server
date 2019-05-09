@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="data.access.mapper.UserManagerMapper">
+
+    <resultMap id="baseEntity" type="data.access.entities.EntityBase">
+        <result property="id" column="id"/>
+        <result property="creatorId" column="creatorId"/>
+        <result property="createDateTime" column="createDateTime"/>
+        <result property="lastUpdateTime" column="lastUpdateTime"/>
+    </resultMap>
+
+    <resultMap id="roles" type="data.access.entities.RoleEntity" extends="baseEntity">
+        <result property="roleName" column="roleName"/>
+        <result property="displayName" column="displayName"/>
+    </resultMap>
+
+    <resultMap id="users" type="data.access.entities.UserEntity" extends="baseEntity">
+        <result property="userName" column="userName"/>
+        <result property="password" column="password"/>
+
+        <collection property="roles" resultMap="roles"/>
+    </resultMap>
+
+    <select id="findByUserName" parameterType="String" resultMap="users">
+      SELECT u.*, r.* FROM users u ,user_roles ur, roles r
+      WHERE u.id = ur.userId AND r.id = ur.roleId AND u.userName = #{userName};
+    </select>
+
+</mapper>

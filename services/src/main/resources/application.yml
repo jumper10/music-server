@@ -7,6 +7,10 @@ spring:
     username: root
     initialization-mode: always
     driver-class-name: com.mysql.cj.jdbc.Driver
+
+
 server:
   servlet:
     context-path: /api
+logging:
+  level.*: debug
