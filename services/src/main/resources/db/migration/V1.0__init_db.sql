@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS User_Roles (
     lastUpdateTime datetime default  CURRENT_TIMESTAMP
 );
 
-insert into User_Roles(userId,roleId) select u.id,r.id from Users u,Roles r where u.userName='admin' and r.roleName='ROLE_ADMIN';
-insert into User_Roles(userId,roleId) select u.id,r.id from Users u,Roles r where u.userName='jumper' and r.roleName='ROLE_USER';
+insert into User_Roles(userId,roleId) select u.id,r.id from Users u,Roles r where u.userName='admin' and r.roleName='R_ADMIN';
+insert into User_Roles(userId,roleId) select u.id,r.id from Users u,Roles r where u.userName='jumper' and r.roleName='R_USER';
 
 

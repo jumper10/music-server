@@ -1,6 +1,7 @@
 package services.controlers;
 
 
+import data.access.models.LoginModel;
 import data.access.models.User;
 import data.access.repositories.UserManagerRepository;
 import library.CustomException;
@@ -12,10 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -29,6 +27,15 @@ public class UserManagerController extends RestControllerBase {
 
     @Autowired
     UserManagerRepository userManagerRepository;
+
+    @PostMapping("/login")
+    public User login(LoginModel input) throws CustomException{
+        logger.info("findByUserName: " + input.getUserName());
+        var user = userManagerRepository.findByUserName(input.getUserName());
+        logger.info(user.toString());
+        logger.info(getCurrentUser().toString());
+        return  user;
+    }
 
     @GetMapping("/logout")
     public String Logout(HttpServletRequest request, HttpServletResponse response){
