@@ -13,9 +13,19 @@ import java.text.DateFormat;
 import java.text.FieldPosition;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Date;
 
  public class RestControllerBase {
+
+     @InitBinder
+     public  void initBinder(WebDataBinder binder){
+         binder.registerCustomEditor(Date.class,
+                 new CustomDateEditor( new SimpleDateFormat( "yyyy-MM-dd HH:mm:ss"),true));
+         binder.registerCustomEditor(LocalDateTime.class,
+                 new CustomDateEditor( new SimpleDateFormat( "yyyy-MM-dd HH:mm:ss"),true));
+
+     }
 
    protected UserDetails  getCurrentUser(){
     return  (UserDetails) SecurityContextHolder.getContext()

@@ -21,31 +21,12 @@ import javax.servlet.http.HttpServletResponse;
 @RestController
 @RequestMapping("/users")
 
-public class UserManagerController extends RestControllerBase {
+public class UserController extends RestControllerBase {
 
     public static final Logger logger = LoggerFactory.getLogger(SmokeController.class);
 
     @Autowired
     UserManagerRepository userManagerRepository;
-
-    @PostMapping("/login")
-    public User login(LoginModel input) throws CustomException{
-        logger.info("findByUserName: " + input.getUserName());
-        var user = userManagerRepository.findByUserName(input.getUserName());
-        logger.info(user.toString());
-        logger.info(getCurrentUser().toString());
-        return  user;
-    }
-
-    @GetMapping("/logout")
-    public String Logout(HttpServletRequest request, HttpServletResponse response){
-        var authorization = SecurityContextHolder.getContext().getAuthentication();
-        if(authorization != null){
-            new SecurityContextLogoutHandler().logout(request, response,authorization);
-            return "logout";
-        }
-        return "erro";
-    }
 
     @GetMapping("/{userName}")
     @PreAuthorize("hasRole('R_ADMIN')")
