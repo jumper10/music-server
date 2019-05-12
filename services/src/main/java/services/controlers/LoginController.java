@@ -10,26 +10,21 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.Collections;
 
 @RestController
+@RequestMapping("/users")
 public class LoginController extends RestControllerBase {
 
     public static final Logger logger = LoggerFactory.getLogger(LoginController.class);
-
-    @Autowired
-    UserManagerRepository userManagerRepository;
 
     @Autowired
     AuthenticationManager authenticationManager;
@@ -47,10 +42,10 @@ public class LoginController extends RestControllerBase {
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(userDetails.getUsername(), userDetails.getPassword(), userDetails.getAuthorities());
 
-        authenticationManager.authenticate(authenticationToken);
+        Authentication newAuthToken = authenticationManager.authenticate(authenticationToken);
 
-        if (authenticationToken.isAuthenticated()) {
-            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+        if (newAuthToken.isAuthenticated()) {
+            SecurityContextHolder.getContext().setAuthentication(newAuthToken);
         }
         logger.info(getCurrentUser().toString());
 
@@ -64,7 +59,7 @@ public class LoginController extends RestControllerBase {
     }
 
     @GetMapping("/logout")
-    public String Logout(HttpServletRequest request, HttpServletResponse response) {
+    public String logout(HttpServletRequest request, HttpServletResponse response) {
         var authorization = SecurityContextHolder.getContext().getAuthentication();
         if (authorization != null) {
             new SecurityContextLogoutHandler().logout(request, response, authorization);

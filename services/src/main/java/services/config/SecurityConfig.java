@@ -36,15 +36,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter  {
                 .authorizeRequests()
                 .antMatchers("/api/smoke","/")
                 .permitAll()
-
-                .antMatchers(HttpMethod.OPTIONS, "/api/login/**")
-                .permitAll()
-                .antMatchers(HttpMethod.POST, "/api/login/**")
+                .antMatchers(HttpMethod.POST, "/api/login")
                 .permitAll()
                 .antMatchers(HttpMethod.GET, "/api/swagger-ui.html")
                 .permitAll()
                 .antMatchers(HttpMethod.GET, "/api/**").authenticated()
-                .antMatchers(HttpMethod.POST, "/api/**").authenticated();
+                .antMatchers(HttpMethod.POST, "/api/**").authenticated()
+                .and()
+                .formLogin()
+                .and()
+                .logout();
     }
 
     @Override

@@ -45,6 +45,15 @@ CREATE TABLE IF NOT EXISTS User_Roles (
 insert into User_Roles(userId,roleId) select u.id,r.id from Users u,Roles r where u.userName='admin' and r.roleName='R_ADMIN';
 insert into User_Roles(userId,roleId) select u.id,r.id from Users u,Roles r where u.userName='jumper' and r.roleName='R_USER';
 
+CREATE TABLE IF NOT EXISTS Singers (
+    id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    singerName VARCHAR(20) NOT NULL,
+    enabled TINYINT NOT NULL DEFAULT 1,
+    creatorId BIGINT,
+    createDateTime datetime default  CURRENT_TIMESTAMP,
+    lastUpdateTime datetime default  CURRENT_TIMESTAMP
+);
+
 CREATE TABLE IF NOT EXISTS Musics (
     id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     musicName VARCHAR(100) NOT NULL,
@@ -55,10 +64,11 @@ CREATE TABLE IF NOT EXISTS Musics (
     createDateTime datetime default  CURRENT_TIMESTAMP,
     lastUpdateTime datetime default  CURRENT_TIMESTAMP
 );
-CREATE TABLE IF NOT EXISTS MVs (
+
+CREATE TABLE IF NOT EXISTS MVS (
     id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    MVName VARCHAR(100) NOT NULL,
-    MVPath VARCHAR(200) NOT NULL,
+    mvName VARCHAR(100) NOT NULL,
+    mvPath VARCHAR(200) NOT NULL,
     enabled TINYINT NOT NULL DEFAULT 1,
     creatorId BIGINT,
     singerId BIGINT,
@@ -66,11 +76,4 @@ CREATE TABLE IF NOT EXISTS MVs (
     lastUpdateTime datetime default  CURRENT_TIMESTAMP
 );
 
-CREATE TABLE IF NOT EXISTS Singers (
-    id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    singerName VARCHAR(20) NOT NULL,
-    enabled TINYINT NOT NULL DEFAULT 1,
-    creatorId BIGINT,
-    createDateTime datetime default  CURRENT_TIMESTAMP,
-    lastUpdateTime datetime default  CURRENT_TIMESTAMP
-);
+

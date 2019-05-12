@@ -1,8 +1,11 @@
 package services.controlers;
 
 
+import org.apache.tomcat.util.http.parser.Authorization;
 import org.slf4j.Logger;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.WebDataBinder;
@@ -28,8 +31,10 @@ import java.util.Date;
      }
 
    protected UserDetails  getCurrentUser(){
-    return  (UserDetails) SecurityContextHolder.getContext()
-            .getAuthentication().getPrincipal();
+       SecurityContext authContext =SecurityContextHolder.getContext();
+       Authentication auth=authContext
+               .getAuthentication();
+    return (UserDetails)auth.getDetails();
    }
 
 }

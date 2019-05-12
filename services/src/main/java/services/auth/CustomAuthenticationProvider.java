@@ -34,9 +34,10 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
                     .roles(user.getRoles().toArray(new String[(int) user.getRoles().stream().count()]))
                     .build();
 
+             UsernamePasswordAuthenticationToken authToken =  new UsernamePasswordAuthenticationToken(userDetails.getUsername(), userDetails.getPassword(), userDetails.getAuthorities());
 
-             return  new UsernamePasswordAuthenticationToken(userDetails.getUsername(), userDetails.getPassword(), userDetails.getAuthorities());
-
+             authToken.setDetails(userDetails);
+             return  authToken;
         }catch (Exception ex){
             ex.printStackTrace();
             throw new CustomAuthenticationException(ex.getMessage());
