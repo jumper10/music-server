@@ -31,8 +31,8 @@ CREATE TABLE IF NOT EXISTS Roles (
     createDateTime datetime default  CURRENT_TIMESTAMP,
     lastUpdateTime datetime default  CURRENT_TIMESTAMP
 );
-insert into Roles(roleName,displayName) values("ROLE_ADMIN","管理员");
-insert into Roles(roleName,displayName) values("ROLE_USER","用户");
+insert into Roles(roleName,displayName) values("R_ADMIN","管理员");
+insert into Roles(roleName,displayName) values("R_USER","用户");
 
 CREATE TABLE IF NOT EXISTS User_Roles (
     id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -45,4 +45,32 @@ CREATE TABLE IF NOT EXISTS User_Roles (
 insert into User_Roles(userId,roleId) select u.id,r.id from Users u,Roles r where u.userName='admin' and r.roleName='R_ADMIN';
 insert into User_Roles(userId,roleId) select u.id,r.id from Users u,Roles r where u.userName='jumper' and r.roleName='R_USER';
 
+CREATE TABLE IF NOT EXISTS Musics (
+    id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    musicName VARCHAR(100) NOT NULL,
+    misicPath VARCHAR(200) NOT NULL,
+    enabled TINYINT NOT NULL DEFAULT 1,
+    creatorId BIGINT,
+    singerId BIGINT,
+    createDateTime datetime default  CURRENT_TIMESTAMP,
+    lastUpdateTime datetime default  CURRENT_TIMESTAMP
+);
+CREATE TABLE IF NOT EXISTS MVs (
+    id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    MVName VARCHAR(100) NOT NULL,
+    MVPath VARCHAR(200) NOT NULL,
+    enabled TINYINT NOT NULL DEFAULT 1,
+    creatorId BIGINT,
+    singerId BIGINT,
+    createDateTime datetime default  CURRENT_TIMESTAMP,
+    lastUpdateTime datetime default  CURRENT_TIMESTAMP
+);
 
+CREATE TABLE IF NOT EXISTS Singers (
+    id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    singerName VARCHAR(20) NOT NULL,
+    enabled TINYINT NOT NULL DEFAULT 1,
+    creatorId BIGINT,
+    createDateTime datetime default  CURRENT_TIMESTAMP,
+    lastUpdateTime datetime default  CURRENT_TIMESTAMP
+);
