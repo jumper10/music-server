@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import services.auth.CustomAuthenticationProvider;
 
 @Configuration
@@ -32,7 +33,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter  {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable()
+        http.
+                httpBasic()
+                .and()
+                .logout().logoutUrl("/logout")
+                .permitAll()
+                .and()
+                .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/api/smoke","/")
                 .permitAll()
@@ -42,10 +49,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter  {
                 .permitAll()
                 .antMatchers(HttpMethod.GET, "/api/**").authenticated()
                 .antMatchers(HttpMethod.POST, "/api/**").authenticated()
-                .and()
-                .formLogin()
-                .and()
-                .logout();
+;
+
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 
     @Override
