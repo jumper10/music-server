@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.util.Base64;
 
 @RestController
 @RequestMapping("/users")
@@ -29,8 +30,9 @@ public class LoginController extends RestControllerBase {
     @Autowired
     AuthenticationManager authenticationManager;
 
+
     @PostMapping("/login")
-    public UserDetails login(@Valid LoginModel loginModel) throws CustomException {
+    public UserDetails login(@Valid @RequestBody LoginModel loginModel,HttpServletResponse response) throws CustomException {
 
         logger.info("findByUserName: " + loginModel.getUserName());
 
@@ -46,6 +48,9 @@ public class LoginController extends RestControllerBase {
 
         if (newAuthToken.isAuthenticated()) {
             SecurityContextHolder.getContext().setAuthentication(newAuthToken);
+            String plainCredentials =String.format("%s:%s",userDetails.getUsername(),userDetails.getPassword());
+            String token = new String( Base64.getEncoder().encode(plainCredentials.getBytes()));
+            response.addHeader("Authorization","Basic "+token);
         }
         logger.info(getCurrentUser().toString());
 
@@ -58,8 +63,9 @@ public class LoginController extends RestControllerBase {
         return null;
     }
 
-    @GetMapping("/logout")
+    @PostMapping("/logout")
     public String logout(HttpServletRequest request, HttpServletResponse response) {
+        SecurityContextHolder.clearContext();
         var authorization = SecurityContextHolder.getContext().getAuthentication();
         if (authorization != null) {
             new SecurityContextLogoutHandler().logout(request, response, authorization);

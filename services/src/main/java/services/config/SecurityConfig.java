@@ -33,8 +33,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter  {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.
-                httpBasic()
+                http
+                .httpBasic()
                 .and()
                 .logout().logoutUrl("/logout")
                 .permitAll()
@@ -51,7 +51,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter  {
                 .antMatchers(HttpMethod.POST, "/api/**").authenticated()
 ;
 
-        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        //http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 
     @Override
